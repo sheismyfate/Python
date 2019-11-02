@@ -232,16 +232,16 @@ class Board(models.Model):
 class Topic(models.Model):
     subject = models.CharField(max_length=255)
     last_updated = models.DateTimeField(auto_now_add=True)
-    board = models.ForeignKey(Board, related_name='topics')
-    starter = models.ForeignKey(User, related_name='topics')
+    board = models.ForeignKey(Board, related_name='topics',on_delete=models.CASCADE,)
+    starter = models.ForeignKey(User, related_name='topics',on_delete=models.CASCADE,)
 
 class Post(models.Model):
     message = models.TextField(max_length=4000)
-    topic = models.ForeignKey(Topic, related_name='posts')
+    topic = models.ForeignKey(Topic, related_name='posts',on_delete=models.CASCADE,)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(null=True)
-    created_by = models.ForeignKey(User, related_name='posts')
-    updated_by = models.ForeignKey(User, null=True, related_name='+')
+    created_by = models.ForeignKey(User, related_name='posts',on_delete=models.CASCADE,)
+    updated_by = models.ForeignKey(User, null=True, related_name='+',on_delete=models.CASCADE,)
 ```
 
 可以看到，创建的所有模型类，**Board** ， **Topic** 和 **Post** 都是 **django.db.models.Model** 的子类，它们都将会转化成数据表。而 **django.db.models.Field** 的子类（Django 内置的核心类）的实例都会转化为数据表中的列。
@@ -323,7 +323,7 @@ python manage.py sqlmigrate boards 0001
 
 
 ```
-python manage.py migrate</code>
+python manage.py migrate
 ```
 
 
